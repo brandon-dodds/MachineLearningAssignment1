@@ -1,5 +1,6 @@
 import csv
 import pandas as pd
+import numpy as np
 
 
 def pol_regression(features_train, y_train, degree):
@@ -8,8 +9,9 @@ def pol_regression(features_train, y_train, degree):
 
 def main():
     df = pd.read_csv('Task1 - dataset - pol_regression.csv')
-    np_array = df.to_numpy()
-    print(np_array)
+    x = df.x.to_numpy()
+    y = df.y.to_numpy()
+    print(x, y)
 
 
 main()
