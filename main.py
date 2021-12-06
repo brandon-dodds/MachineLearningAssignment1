@@ -9,9 +9,9 @@ def pol_regression(features_train, y_train, degree):
         one_stack = np.column_stack((one_stack, features_train ** i))
 
     x_dot_product = one_stack.transpose().dot(one_stack)
-    w = np.linalg.solve(x_dot_product, one_stack.transpose().dot(y_train))
+    weights = np.linalg.solve(x_dot_product, one_stack.transpose().dot(y_train))
 
-    return w
+    return weights
 
 
 def main():
