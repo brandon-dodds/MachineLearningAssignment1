@@ -20,7 +20,7 @@ def main():
     x = df.x.to_numpy()
     y = df.y.to_numpy()
     print(pol_regression(x, y, 2))
-
+    plt.clf()
     plt.scatter(x, y)
     plt.show()
 
