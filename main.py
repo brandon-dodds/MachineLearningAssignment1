@@ -1,6 +1,7 @@
 import pandas as pd
 import numpy as np
 import numpy.linalg as linalg
+import matplotlib.pyplot as plt
 
 
 def pol_regression(features_train, y_train, degree):
@@ -19,6 +20,9 @@ def main():
     x = df.x.to_numpy()
     y = df.y.to_numpy()
     print(pol_regression(x, y, 2))
+
+    plt.scatter(x, y)
+    plt.show()
 
 
 main()
