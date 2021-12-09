@@ -1,6 +1,7 @@
 import pandas as pd
 import numpy as np
 import numpy.linalg as linalg
+import matplotlib.pyplot as plt
 
 
 def generate_one_stack(x, degree):
@@ -23,7 +24,18 @@ def main():
     df = pd.read_csv('Task1 - dataset - pol_regression.csv', names=['row_number', 'x', 'y'], skiprows=1)
     x = df.x.to_numpy()
     y = df.y.to_numpy()
+    x.sort()
+    y.sort()
     print(pol_regression(x, y, 2))
+
+    plt.figure()
+    plt.plot(x, y, 'bo')
+
+    w1 = pol_regression(x, y, 10)
+    Xtest1 = generate_one_stack(x, 10)
+    ytest1 = Xtest1.dot(w1)
+    plt.plot(x, ytest1, 'r')
+    plt.show()
 
 
 main()
