@@ -26,14 +26,36 @@ def main():
     y = df.y.to_numpy()
     x.sort()
     y.sort()
-    degree = 10
 
     plt.figure()
     plt.plot(x, y, 'bo')
-    w1 = pol_regression(x, y, degree)
-    Xtest1 = generate_one_stack(x, degree)
+
+    w1 = pol_regression(x, y, 1)
+    Xtest1 = generate_one_stack(x, 1)
     ytest1 = Xtest1.dot(w1)
     plt.plot(x, ytest1, 'r')
+
+    w2 = pol_regression(x, y, 2)
+    Xtest2 = generate_one_stack(x, 2)
+    ytest2 = Xtest2.dot(w2)
+    plt.plot(x, ytest2, 'g')
+
+    w3 = pol_regression(x, y, 3)
+    Xtest3 = generate_one_stack(x, 3)
+    ytest3 = Xtest3.dot(w3)
+    plt.plot(x, ytest3, 'b')
+
+    w4 = pol_regression(x, y, 6)
+    Xtest4 = generate_one_stack(x, 6)
+    ytest4 = Xtest4.dot(w4)
+    plt.plot(x, ytest4, 'c')
+
+    w5 = pol_regression(x, y, 10)
+    Xtest5 = generate_one_stack(x, 10)
+    ytest5 = Xtest5.dot(w5)
+    plt.plot(x, ytest5, 'm')
+
+    plt.legend(('training points', '$x$', '$x^2$', '$x^3$', '$x^6$', '$x^{10}$'))
     plt.show()
 
 
