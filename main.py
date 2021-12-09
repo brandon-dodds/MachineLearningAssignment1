@@ -1,14 +1,18 @@
 import pandas as pd
 import numpy as np
 import numpy.linalg as linalg
-import matplotlib.pyplot as plt
+
+
+def generate_one_stack(x, degree):
+    one_stack = np.ones(x.shape)
+    for i in range(1, degree + 1):
+        one_stack = np.column_stack((one_stack, x ** i))
+
+    return one_stack
 
 
 def pol_regression(features_train, y_train, degree):
-    one_stack = np.ones(features_train.shape)
-    for i in range(1, degree + 1):
-        one_stack = np.column_stack((one_stack, features_train ** i))
-
+    one_stack = generate_one_stack(features_train, degree)
     x_dot_product = one_stack.transpose().dot(one_stack)
     weights = np.linalg.solve(x_dot_product, one_stack.transpose().dot(y_train))
 
@@ -20,9 +24,6 @@ def main():
     x = df.x.to_numpy()
     y = df.y.to_numpy()
     print(pol_regression(x, y, 2))
-
-    plt.scatter(x, y)
-    plt.show()
 
 
 main()
