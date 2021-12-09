@@ -26,13 +26,12 @@ def main():
     y = df.y.to_numpy()
     x.sort()
     y.sort()
-    print(pol_regression(x, y, 2))
+    degree = 10
 
     plt.figure()
     plt.plot(x, y, 'bo')
-
-    w1 = pol_regression(x, y, 10)
-    Xtest1 = generate_one_stack(x, 10)
+    w1 = pol_regression(x, y, degree)
+    Xtest1 = generate_one_stack(x, degree)
     ytest1 = Xtest1.dot(w1)
     plt.plot(x, ytest1, 'r')
     plt.show()
