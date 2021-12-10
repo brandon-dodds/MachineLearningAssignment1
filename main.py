@@ -13,6 +13,8 @@ def generate_one_stack(x, degree):
 
 
 def pol_regression(features_train, y_train, degree):
+    if degree == 0:
+        return np.mean(y_train)
     one_stack = generate_one_stack(features_train, degree)
     x_dot_product = one_stack.transpose().dot(one_stack)
     weights = np.linalg.solve(x_dot_product, one_stack.transpose().dot(y_train))
@@ -27,35 +29,43 @@ def main():
     x.sort()
     y.sort()
 
+    x_test = np.linspace(-5, 5, 50)
+
     plt.figure()
     plt.plot(x, y, 'bo')
 
+    w0 = pol_regression(x, y, 0)
+    x_test_0 = generate_one_stack(x_test, 0)
+    y_test_0 = x_test_0.dot(w0)
+    plt.plot(x_test, y_test_0, 'k')
+
     w1 = pol_regression(x, y, 1)
-    Xtest1 = generate_one_stack(x, 1)
-    ytest1 = Xtest1.dot(w1)
-    plt.plot(x, ytest1, 'r')
+    x_test_1 = generate_one_stack(x_test, 1)
+    y_test_1 = x_test_1.dot(w1)
+    plt.plot(x_test, y_test_1, 'r')
 
     w2 = pol_regression(x, y, 2)
-    Xtest2 = generate_one_stack(x, 2)
-    ytest2 = Xtest2.dot(w2)
-    plt.plot(x, ytest2, 'g')
+    x_test_2 = generate_one_stack(x_test, 2)
+    y_test_2 = x_test_2.dot(w2)
+    plt.plot(x_test, y_test_2, 'g')
 
     w3 = pol_regression(x, y, 3)
-    Xtest3 = generate_one_stack(x, 3)
-    ytest3 = Xtest3.dot(w3)
-    plt.plot(x, ytest3, 'b')
+    x_test_3 = generate_one_stack(x_test, 3)
+    y_test_3 = x_test_3.dot(w3)
+    plt.plot(x_test, y_test_3, 'b')
 
     w4 = pol_regression(x, y, 6)
-    Xtest4 = generate_one_stack(x, 6)
-    ytest4 = Xtest4.dot(w4)
-    plt.plot(x, ytest4, 'c')
+    x_test_4 = generate_one_stack(x_test, 6)
+    y_test_4 = x_test_4.dot(w4)
+    plt.plot(x_test, y_test_4, 'c')
 
     w5 = pol_regression(x, y, 10)
-    Xtest5 = generate_one_stack(x, 10)
-    ytest5 = Xtest5.dot(w5)
-    plt.plot(x, ytest5, 'm')
+    x_test_5 = generate_one_stack(x_test, 10)
+    y_test_5 = x_test_5.dot(w5)
+    plt.plot(x_test, y_test_5, 'm')
 
-    plt.legend(('training points', '$x$', '$x^2$', '$x^3$', '$x^6$', '$x^{10}$'))
+    plt.ylim(-50, 50)
+    plt.legend(('training points', '$x^0$', '$x$', '$x^2$', '$x^3$', '$x^6$', '$x^{10}$'))
     plt.show()
 
 
