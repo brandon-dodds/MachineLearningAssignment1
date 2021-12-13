@@ -24,8 +24,10 @@ def pol_regression(features_train, y_train, degree):
 
 
 def eval_pol_regression(parameters, x, y, degree):
-    pass
-    # rmse = np.sqrt(np.sum(y_predicted, y_actual) ** 2 / len(x))
+    y_predicted = generate_one_stack(x, degree).dot(parameters)
+    rmse = np.sqrt(np.sum(y_predicted, y) ** 2 / len(x))
+
+    return rmse
 
 
 def main():
