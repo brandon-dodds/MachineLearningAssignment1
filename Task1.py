@@ -2,6 +2,7 @@ import pandas as pd
 import numpy as np
 import numpy.linalg as linalg
 import matplotlib.pyplot as plt
+from sklearn.model_selection import train_test_split
 
 
 def generate_one_stack(x, degree):
@@ -20,6 +21,11 @@ def pol_regression(features_train, y_train, degree):
     weights = np.linalg.solve(x_dot_product, one_stack.transpose().dot(y_train))
 
     return weights
+
+
+def eval_pol_regression(parameters, x, y, degree):
+    pass
+    # rmse = np.sqrt(np.sum(y_predicted, y_actual) ** 2 / len(x))
 
 
 def main():
