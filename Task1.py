@@ -25,9 +25,16 @@ def pol_regression(features_train, y_train, degree):
 
 def eval_pol_regression(parameters, x, y, degree):
     y_predicted = generate_one_stack(x, degree).dot(parameters)
-    rmse = np.sqrt(np.sum(y_predicted, y) ** 2 / len(x))
+    root_mean_square_error = np.sqrt(np.sum(y_predicted, y) ** 2 / len(x))
 
-    return rmse
+    return root_mean_square_error
+
+
+def plot_colour(x, points, y, degree, colour):
+    w = pol_regression(x, y, degree)
+    x_test = generate_one_stack(points, degree)
+    y_test = x_test.dot(w)
+    plt.plot(points, y_test, colour)
 
 
 def main():
@@ -42,39 +49,18 @@ def main():
     plt.figure()
     plt.plot(x, y, 'bo')
 
-    w0 = pol_regression(x, y, 0)
-    x_test_0 = generate_one_stack(x_test, 0)
-    y_test_0 = x_test_0.dot(w0)
-    plt.plot(x_test, y_test_0, 'k')
-
-    w1 = pol_regression(x, y, 1)
-    x_test_1 = generate_one_stack(x_test, 1)
-    y_test_1 = x_test_1.dot(w1)
-    plt.plot(x_test, y_test_1, 'r')
-
-    w2 = pol_regression(x, y, 2)
-    x_test_2 = generate_one_stack(x_test, 2)
-    y_test_2 = x_test_2.dot(w2)
-    plt.plot(x_test, y_test_2, 'g')
-
-    w3 = pol_regression(x, y, 3)
-    x_test_3 = generate_one_stack(x_test, 3)
-    y_test_3 = x_test_3.dot(w3)
-    plt.plot(x_test, y_test_3, 'b')
-
-    w4 = pol_regression(x, y, 6)
-    x_test_4 = generate_one_stack(x_test, 6)
-    y_test_4 = x_test_4.dot(w4)
-    plt.plot(x_test, y_test_4, 'c')
-
-    w5 = pol_regression(x, y, 10)
-    x_test_5 = generate_one_stack(x_test, 10)
-    y_test_5 = x_test_5.dot(w5)
-    plt.plot(x_test, y_test_5, 'm')
+    plot_colour(x, x_test, y, 0, 'k')
+    plot_colour(x, x_test, y, 1, 'r')
+    plot_colour(x, x_test, y, 2, 'g')
+    plot_colour(x, x_test, y, 3, 'b')
+    plot_colour(x, x_test, y, 6, 'c')
+    plot_colour(x, x_test, y, 10, 'm')
 
     plt.ylim(-50, 50)
     plt.legend(('training points', '$x^0$', '$x$', '$x^2$', '$x^3$', '$x^6$', '$x^{10}$'))
     plt.show()
+
+    X_train, X_test, Y_train, Y_test = train_test_split(x, y, test_size=0.3)
 
 
 main()
