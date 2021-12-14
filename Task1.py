@@ -44,17 +44,17 @@ def main():
     x.sort()
     y.sort()
 
-    x_test = np.linspace(-5, 5, 50)
+    generated_x = np.linspace(-5, 5)
 
     plt.figure()
     plt.plot(x, y, 'bo')
 
-    plot_colour(x, x_test, y, 0, 'k')
-    plot_colour(x, x_test, y, 1, 'r')
-    plot_colour(x, x_test, y, 2, 'g')
-    plot_colour(x, x_test, y, 3, 'b')
-    plot_colour(x, x_test, y, 6, 'c')
-    plot_colour(x, x_test, y, 10, 'm')
+    plot_colour(x, generated_x, y, 0, 'k')
+    plot_colour(x, generated_x, y, 1, 'r')
+    plot_colour(x, generated_x, y, 2, 'g')
+    plot_colour(x, generated_x, y, 3, 'b')
+    plot_colour(x, generated_x, y, 6, 'c')
+    plot_colour(x, generated_x, y, 10, 'm')
 
     plt.ylim(-50, 50)
     plt.legend(('training points', '$x^0$', '$x$', '$x^2$', '$x^3$', '$x^6$', '$x^{10}$'))
