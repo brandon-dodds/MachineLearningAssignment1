@@ -25,7 +25,7 @@ def pol_regression(features_train, y_train, degree):
 
 def eval_pol_regression(parameters, x, y, degree):
     y_predicted = generate_one_stack(x, degree).dot(parameters)
-    root_mean_square_error = np.sqrt(np.sum(y_predicted, y) ** 2 / len(x))
+    root_mean_square_error = np.sqrt(np.sum((y_predicted - y) ** 2 / len(x)))
 
     return root_mean_square_error
 
@@ -61,6 +61,8 @@ def main():
     plt.show()
 
     X_train, X_test, Y_train, Y_test = train_test_split(x, y, test_size=0.3)
+
+    print(eval_pol_regression(pol_regression(X_train, Y_train, 3), X_train, Y_train, 3))
 
 
 main()
