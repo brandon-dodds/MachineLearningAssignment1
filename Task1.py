@@ -41,10 +41,11 @@ def main():
     df = pd.read_csv('Task1 - dataset - pol_regression.csv', names=['row_number', 'x', 'y'], skiprows=1)
     x = df.x.to_numpy()
     y = df.y.to_numpy()
-    x.sort()
-    y.sort()
+    x, y = zip(*sorted(zip(x, y)))
+    x = np.array(x)
+    y = np.array(y)
 
-    generated_x = np.linspace(-5, 5)
+    generated_x = np.linspace(-5, 5, 200)
 
     plt.figure()
     plt.plot(x, y, 'bo')
@@ -55,14 +56,13 @@ def main():
     plot_colour(x, generated_x, y, 3, 'b')
     plot_colour(x, generated_x, y, 6, 'c')
     plot_colour(x, generated_x, y, 10, 'm')
-
-    plt.ylim(-50, 50)
+    plt.ylim(-200, 50)
     plt.legend(('training points', '$x^0$', '$x$', '$x^2$', '$x^3$', '$x^6$', '$x^{10}$'))
     plt.show()
 
-    X_train, X_test, Y_train, Y_test = train_test_split(x, y, test_size=0.3)
+    x_train, y_test, y_train, y_test = train_test_split(x, y, test_size=0.3)
 
-    print(eval_pol_regression(pol_regression(X_train, Y_train, 3), X_train, Y_train, 3))
+    print(eval_pol_regression(pol_regression(x_train, y_train, 3), x_train, y_train, 3))
 
 
 main()
