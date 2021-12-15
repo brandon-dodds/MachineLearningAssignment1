@@ -65,8 +65,11 @@ def main():
     test_rme = []
     train_rme = []
     for degree in degrees:
-        train_rme.append((pol_regression(x_train, y_train, degree), x_train, y_train, degree))
-        test_rme.append((pol_regression(x_test, y_test, degree), x_test, y_test, degree))
+        train_rme.append(eval_pol_regression(pol_regression(x_train, y_train, degree), x_train, y_train, degree))
+        test_rme.append(eval_pol_regression(pol_regression(x_test, y_test, degree), x_test, y_test, degree))
 
+    plt.plot(degrees, test_rme)
+    plt.plot(degrees, train_rme)
+    plt.show()
 
 main()
