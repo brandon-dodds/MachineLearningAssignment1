@@ -60,9 +60,13 @@ def main():
     plt.legend(('training points', '$x^0$', '$x$', '$x^2$', '$x^3$', '$x^6$', '$x^{10}$'))
     plt.show()
 
-    x_train, y_test, y_train, y_test = train_test_split(x, y, test_size=0.3)
-
-    print(eval_pol_regression(pol_regression(x_train, y_train, 3), x_train, y_train, 3))
+    x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.3)
+    degrees = [0, 1, 2, 3, 6, 10]
+    test_rme = []
+    train_rme = []
+    for degree in degrees:
+        train_rme.append((pol_regression(x_train, y_train, degree), x_train, y_train, degree))
+        test_rme.append((pol_regression(x_test, y_test, degree), x_test, y_test, degree))
 
 
 main()
