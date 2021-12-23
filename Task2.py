@@ -1,8 +1,7 @@
 import math
-
-import numpy
 import pandas as pd
 import numpy as np
+from matplotlib import pyplot as plt
 
 
 def compute_euclidian_distance(vec_1, vec_2):
@@ -43,7 +42,9 @@ def main():
     df = pd.read_csv('Task2 - dataset - dog_breeds.csv',
                      names=['height', 'tail length', 'leg length', 'nose circumference'], skiprows=1)
 
-    print(df['height'].values)
+    x = np.column_stack((df['height'].values, df['tail length'].values))
+    y, z = kmeans(x, 3)
+    print(y)
 
 
 main()
