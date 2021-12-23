@@ -1,4 +1,6 @@
 import math
+
+import numpy
 import pandas as pd
 import numpy as np
 
@@ -26,12 +28,22 @@ def kmeans(dataset, k):
                 best_centroid = centroid
         cluster_assignment.append((points, best_centroid))
 
+    for centroid in centroids:
+        values = []
+        mean = 0
+        for data in cluster_assignment:
+            comparison = centroid == data[1]
+            if comparison.all():
+                values.append(data[0])
+
     return centroids, cluster_assignment
 
 
 def main():
     df = pd.read_csv('Task2 - dataset - dog_breeds.csv',
                      names=['height', 'tail length', 'leg length', 'nose circumference'], skiprows=1)
+
+    print(df['height'].values)
 
 
 main()
