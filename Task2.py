@@ -20,20 +20,27 @@ def initialise_centroids(dataset, k):
 def kmeans(dataset, k):
     centroids = initialise_centroids(dataset, k)
     cluster_assignment = []
-    for points in dataset:
-        best_centroid = centroids[0]
-        for centroid in centroids[1:]:
-            if compute_euclidian_distance(points, centroid) < compute_euclidian_distance(points, best_centroid):
-                best_centroid = centroid
-        cluster_assignment.append((points, best_centroid))
+    mean_changed = True
+    while mean_changed:
+        new_centroids = []
+        for points in dataset:
+            best_centroid = centroids[0]
+            for centroid in centroids[1:]:
+                if compute_euclidian_distance(points, centroid) < compute_euclidian_distance(points, best_centroid):
+                    best_centroid = centroid
+            cluster_assignment.append((points, best_centroid))
 
-    for centroid in centroids:
-        values = []
-        mean = 0
-        for data in cluster_assignment:
-            comparison = centroid == data[1]
-            if comparison.all():
-                values.append(data[0])
+        for centroid in centroids:
+            values = []
+            for data in cluster_assignment:
+                if np.array_equal(centroid, data[1]):
+                    values.append(data[0])
+            mean = np.mean(values, axis=0)
+            new_centroids.append(mean)
+        if np.array_equal(centroids, new_centroids):
+            break
+        else:
+            centroids = new_centroids
 
     return centroids, cluster_assignment
 
@@ -43,7 +50,7 @@ def main():
                      names=['height', 'tail length', 'leg length', 'nose circumference'], skiprows=1)
 
     x = np.column_stack((df['height'].values, df['tail length'].values))
-    y, z = kmeans(x, 3)
+    y, z = kmeans(x, 2)
     print(y)
 
 
