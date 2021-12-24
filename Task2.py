@@ -19,9 +19,9 @@ def initialise_centroids(dataset, k):
 
 def kmeans(dataset, k):
     centroids = initialise_centroids(dataset, k)
-    cluster_assignment = []
     mean_changed = True
     while mean_changed:
+        cluster_assignment = []
         new_centroids = []
         for points in dataset:
             best_centroid = centroids[0]
@@ -50,7 +50,8 @@ def main():
                      names=['height', 'tail length', 'leg length', 'nose circumference'], skiprows=1)
 
     x = np.column_stack((df['height'].values, df['tail length'].values))
-    y, z = kmeans(x, 2)
+    print(x)
+    y, z = kmeans(x, 3)
     print(y)
 
 
