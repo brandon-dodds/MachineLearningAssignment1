@@ -5,7 +5,7 @@ from matplotlib import pyplot as plt
 
 
 # Makes a scatter out of a np array from the centroids and the best centroid assigned.
-def plot_curves(k_means):
+def plot_curves(k_means, array_index):
     centroids = np.array(k_means[0])
     cluster_assignment = k_means[1]
 
@@ -15,8 +15,8 @@ def plot_curves(k_means):
             if np.array_equal(y[1], x):
                 centroid_list.append(y[0])
         centroid_list = np.array(centroid_list)
-        plt.scatter(centroid_list[:, 0], centroid_list[:, 1])
-    plt.scatter(centroids[:, 0], centroids[:, 1], c='black')
+        plt.scatter(centroid_list[:, 0], centroid_list[:, array_index])
+    plt.scatter(centroids[:, 0], centroids[:, array_index], c='black')
     plt.show()
 
     x, y = list(zip(*k_means[2]))
@@ -93,8 +93,10 @@ def main():
     # plot the specific curves for k means = 2 and k means = 3
     k_means_2 = kmeans(df.values, 2)
     k_means_3 = kmeans(df.values, 3)
-    plot_curves(k_means_2)
-    plot_curves(k_means_3)
+    plot_curves(k_means_2, 1)
+    plot_curves(k_means_2, 2)
+    plot_curves(k_means_3, 1)
+    plot_curves(k_means_3, 2)
 
 
 main()
