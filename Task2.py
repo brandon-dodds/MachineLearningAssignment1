@@ -5,10 +5,8 @@ from matplotlib import pyplot as plt
 
 
 # Makes a scatter out of a np array from the centroids and the best centroid assigned.
-def plot_curves(k_means, label_x, label_y):
-    plt.xlabel(label_x)
-    plt.ylabel(label_y)
-    centroids = k_means[0]
+def plot_curves(k_means):
+    centroids = np.array(k_means[0])
     cluster_assignment = k_means[1]
 
     for x in centroids:
@@ -18,7 +16,6 @@ def plot_curves(k_means, label_x, label_y):
                 centroid_list.append(y[0])
         centroid_list = np.array(centroid_list)
         plt.scatter(centroid_list[:, 0], centroid_list[:, 1])
-    centroids = np.array(centroids)
     plt.scatter(centroids[:, 0], centroids[:, 1], c='black')
     plt.show()
 
@@ -93,15 +90,11 @@ def main():
     df = pd.read_csv('Task2 - dataset - dog_breeds.csv',
                      names=['height', 'tail length', 'leg length', 'nose circumference'], skiprows=1)
 
-    # Take the height and tail length, and height and leg length values.
-    height_tail_length = np.column_stack((df['height'].values, df['tail length'].values))
-    height_leg_length = np.column_stack((df['height'].values, df['leg length'].values))
-
     # plot the specific curves for k means = 2 and k means = 3
-    plot_curves(kmeans(height_tail_length, 2), 'height', 'tail length')
-    plot_curves(kmeans(height_tail_length, 3), 'height', 'tail length')
-    plot_curves(kmeans(height_leg_length, 2), 'height', 'leg length')
-    plot_curves(kmeans(height_leg_length, 3), 'height', 'leg length')
+    k_means_2 = kmeans(df.values, 2)
+    k_means_3 = kmeans(df.values, 3)
+    plot_curves(k_means_2)
+    plot_curves(k_means_3)
 
 
 main()
