@@ -5,7 +5,9 @@ from matplotlib import pyplot as plt
 
 
 # Makes a scatter out of a np array from the centroids and the best centroid assigned.
-def plot_scatter_curve(k_means):
+def plot_scatter_curve(k_means, label_x, label_y):
+    plt.xlabel(label_x)
+    plt.ylabel(label_y)
     centroids = k_means[0]
     cluster_assignment = k_means[1]
 
@@ -17,7 +19,7 @@ def plot_scatter_curve(k_means):
         centroid_list = np.array(centroid_list)
         plt.scatter(centroid_list[:, 0], centroid_list[:, 1])
     centroids = np.array(centroids)
-    plt.scatter(centroids[:, 0], centroids[:, 1], color='black')
+    plt.scatter(centroids[:, 0], centroids[:, 1], c='black')
     plt.show()
 
 
@@ -65,6 +67,7 @@ def kmeans(dataset, k):
         if np.array_equal(centroids, new_centroids):
             break
         else:
+
             centroids = new_centroids
 
     return centroids, cluster_assignment
@@ -80,10 +83,10 @@ def main():
     height_leg_length = np.column_stack((df['height'].values, df['leg length'].values))
 
     # plot the specific curves for k means = 2 and k means = 3
-    plot_scatter_curve(kmeans(height_tail_length, 2))
-    plot_scatter_curve(kmeans(height_tail_length, 3))
-    plot_scatter_curve(kmeans(height_leg_length, 2))
-    plot_scatter_curve(kmeans(height_leg_length, 3))
+    plot_scatter_curve(kmeans(height_tail_length, 2), 'height', 'tail length')
+    plot_scatter_curve(kmeans(height_tail_length, 3), 'height', 'tail length')
+    plot_scatter_curve(kmeans(height_leg_length, 2), 'height', 'leg length')
+    plot_scatter_curve(kmeans(height_leg_length, 3), 'height', 'leg length')
 
 
 main()
