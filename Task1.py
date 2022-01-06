@@ -6,6 +6,7 @@ from sklearn.model_selection import train_test_split
 
 
 def generate_one_stack(x, degree):
+    # generates the one stack by creating a stack of ones and column stacking to a specific degree.
     one_stack = np.ones(x.shape)
     for i in range(1, degree + 1):
         one_stack = np.column_stack((one_stack, x ** i))
@@ -14,6 +15,7 @@ def generate_one_stack(x, degree):
 
 
 def pol_regression(features_train, y_train, degree):
+    # Returns the mean if the degree is 0, else it applies the np.linalg.solve the x^2 and y_train.
     if degree == 0:
         return np.mean(y_train)
     one_stack = generate_one_stack(features_train, degree)
