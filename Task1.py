@@ -19,10 +19,12 @@ def pol_regression(features_train, y_train, degree):
     if degree == 0:
         return np.mean(y_train)
     one_stack = generate_one_stack(features_train, degree)
+    # Transpose and squares it.
     x_dot_product = one_stack.transpose().dot(one_stack)
-    weights = np.linalg.solve(x_dot_product, one_stack.transpose().dot(y_train))
+    # Applies the linalg solve to the values.
+    coefficients = np.linalg.solve(x_dot_product, one_stack.transpose().dot(y_train))
 
-    return weights
+    return coefficients
 
 
 def eval_pol_regression(parameters, x, y, degree):
@@ -72,6 +74,9 @@ def main():
 
     plt.plot(degrees, test_rme)
     plt.plot(degrees, train_rme)
+    plt.legend(('test', 'train'))
+    plt.xlabel("Degrees")
+    plt.ylabel("RMSE")
     plt.show()
 
 
