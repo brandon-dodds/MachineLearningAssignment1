@@ -5,6 +5,7 @@ import numpy as np
 from matplotlib import pyplot as plt
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import accuracy_score
+from sklearn.model_selection import KFold
 
 
 def main():
@@ -32,7 +33,7 @@ def main():
     history = model.fit(train, train_data_labels, validation_data=(test, test_data_labels), epochs=10)
     plt.plot(history.history['val_accuracy'])
     plt.plot(history.history['val_loss'])
-    plt.show()
+    # plt.show()
 
     clf_5 = RandomForestClassifier(max_depth=2, random_state=0, min_samples_leaf=5, n_estimators=1000)
     clf_10 = RandomForestClassifier(max_depth=2, random_state=0, min_samples_leaf=10, n_estimators=1000)
@@ -40,6 +41,11 @@ def main():
     clf_10.fit(train, train_data_labels)
     print(accuracy_score(test_data_labels, clf_5.predict(test)))
     print(accuracy_score(test_data_labels, clf_10.predict(test)))
+    kf = KFold(n_splits=10)
+    for train_index, test_index in kf.split(dataset):
+        print("TRAIN:", train_index, "TEST:", test_index)
+        x_train, x_test = dataset.iloc[train_index], dataset.iloc[test_index]
+        print(x_train, x_test)
 
 
 main()
