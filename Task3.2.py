@@ -34,6 +34,7 @@ def random_forest(train, train_data_labels, num_leafs, num_trees):
 
 def main():
     dataset = pd.read_csv("Task3 - dataset - HIV RVG.csv")
+    dataset_KFold = dataset.copy()
     dataset = dataset.replace(to_replace=['Control', 'Patient'], value=[0, 1])
     dataset = dataset.drop(['Image number', 'Bifurcation number', 'Artery (1)/ Vein (2)'], axis=1)
     train, test = train_test_split(dataset, test_size=0.1)
