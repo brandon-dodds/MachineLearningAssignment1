@@ -1,22 +1,14 @@
 import tensorflow as tf
 import pandas as pd
 from sklearn.model_selection import train_test_split
-import numpy as np
 from matplotlib import pyplot as plt
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import accuracy_score
 from sklearn.model_selection import KFold
 
 
-def main():
-    dataset = pd.read_csv("Task3 - dataset - HIV RVG.csv")
-    dataset = dataset.replace(to_replace=['Control', 'Patient'], value=[0, 1])
-    dataset = dataset.drop(['Image number', 'Bifurcation number', 'Artery (1)/ Vein (2)'], axis=1)
-    train, test = train_test_split(dataset, test_size=0.1)
-    train_data_labels = train.pop("Participant Condition")
-    test_data_labels = test.pop("Participant Condition")
+def ann(train, train_data_labels, test, test_data_labels):
     layer = tf.keras.layers.Normalization(axis=-1)
-    train = np.asarray(train).astype(np.float32)
     layer.adapt(train)
     layer(test)
     model = tf.keras.models.Sequential([
@@ -31,6 +23,17 @@ def main():
                   metrics=['accuracy'])
 
     history = model.fit(train, train_data_labels, validation_data=(test, test_data_labels), epochs=10)
+    return history
+
+
+def main():
+    dataset = pd.read_csv("Task3 - dataset - HIV RVG.csv")
+    dataset = dataset.replace(to_replace=['Control', 'Patient'], value=[0, 1])
+    dataset = dataset.drop(['Image number', 'Bifurcation number', 'Artery (1)/ Vein (2)'], axis=1)
+    train, test = train_test_split(dataset, test_size=0.1)
+    train_data_labels = train.pop("Participant Condition")
+    test_data_labels = test.pop("Participant Condition")
+    history = ann(train, train_data_labels, test, test_data_labels)
     plt.plot(history.history['val_accuracy'])
     plt.plot(history.history['val_loss'])
     # plt.show()
