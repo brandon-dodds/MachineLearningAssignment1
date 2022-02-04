@@ -7,14 +7,14 @@ from sklearn.metrics import accuracy_score
 from sklearn.model_selection import KFold
 
 
-def ann(train, train_data_labels, test, test_data_labels, epochs):
+def ann(train, train_data_labels, test, test_data_labels, epochs, neurons_in_layer):
     layer = tf.keras.layers.Normalization(axis=-1)
     layer.adapt(train)
     layer(test)
     model = tf.keras.models.Sequential([
         layer,
-        tf.keras.layers.Dense(500, activation='sigmoid'),
-        tf.keras.layers.Dense(500, activation='sigmoid'),
+        tf.keras.layers.Dense(neurons_in_layer, activation='sigmoid'),
+        tf.keras.layers.Dense(neurons_in_layer, activation='sigmoid'),
         tf.keras.layers.Dense(1, activation='sigmoid')
     ])
 
@@ -39,7 +39,7 @@ def main():
     train, test = train_test_split(dataset, test_size=0.1)
     train_data_labels = train.pop("Participant Condition")
     test_data_labels = test.pop("Participant Condition")
-    history = ann(train, train_data_labels, test, test_data_labels, 10)
+    history = ann(train, train_data_labels, test, test_data_labels, 10, 500)
     plt.plot(history.history['val_accuracy'])
     plt.plot(history.history['val_loss'])
     # plt.show()
