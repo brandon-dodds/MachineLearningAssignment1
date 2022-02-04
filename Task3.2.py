@@ -26,8 +26,8 @@ def ann(train, train_data_labels, test, test_data_labels, epochs, neurons_in_lay
     return history
 
 
-def random_forest(train, train_data_labels, num_leafs):
-    clf = RandomForestClassifier(max_depth=2, random_state=0, min_samples_leaf=num_leafs, n_estimators=1000)
+def random_forest(train, train_data_labels, num_leafs, num_trees):
+    clf = RandomForestClassifier(max_depth=2, random_state=0, min_samples_leaf=num_leafs, n_estimators=num_trees)
     clf.fit(train, train_data_labels)
     return clf
 
@@ -44,8 +44,8 @@ def main():
     plt.plot(history.history['val_loss'])
     # plt.show()
 
-    clf_5 = random_forest(train, train_data_labels, 500)
-    clf_10 = random_forest(train, train_data_labels, 1000)
+    clf_5 = random_forest(train, train_data_labels, 5, 1000)
+    clf_10 = random_forest(train, train_data_labels, 10, 1000)
     print(accuracy_score(test_data_labels, clf_5.predict(test)))
     print(accuracy_score(test_data_labels, clf_10.predict(test)))
     kf = KFold(n_splits=10)
