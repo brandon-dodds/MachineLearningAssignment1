@@ -7,7 +7,7 @@ from sklearn.metrics import accuracy_score
 from sklearn.model_selection import KFold
 
 
-def ann(train, train_data_labels, test, test_data_labels):
+def ann(train, train_data_labels, test, test_data_labels, epochs):
     layer = tf.keras.layers.Normalization(axis=-1)
     layer.adapt(train)
     layer(test)
@@ -22,8 +22,14 @@ def ann(train, train_data_labels, test, test_data_labels):
                   loss='binary_crossentropy',
                   metrics=['accuracy'])
 
-    history = model.fit(train, train_data_labels, validation_data=(test, test_data_labels), epochs=10)
+    history = model.fit(train, train_data_labels, validation_data=(test, test_data_labels), epochs=epochs)
     return history
+
+
+def random_forest(train, train_data_labels, num_leafs):
+    clf = RandomForestClassifier(max_depth=2, random_state=0, min_samples_leaf=num_leafs, n_estimators=1000)
+    clf.fit(train, train_data_labels)
+    return clf
 
 
 def main():
@@ -33,15 +39,13 @@ def main():
     train, test = train_test_split(dataset, test_size=0.1)
     train_data_labels = train.pop("Participant Condition")
     test_data_labels = test.pop("Participant Condition")
-    history = ann(train, train_data_labels, test, test_data_labels)
+    history = ann(train, train_data_labels, test, test_data_labels, 10)
     plt.plot(history.history['val_accuracy'])
     plt.plot(history.history['val_loss'])
     # plt.show()
 
-    clf_5 = RandomForestClassifier(max_depth=2, random_state=0, min_samples_leaf=5, n_estimators=1000)
-    clf_10 = RandomForestClassifier(max_depth=2, random_state=0, min_samples_leaf=10, n_estimators=1000)
-    clf_5.fit(train, train_data_labels)
-    clf_10.fit(train, train_data_labels)
+    clf_5 = random_forest(train, train_data_labels, 500)
+    clf_10 = random_forest(train, train_data_labels, 1000)
     print(accuracy_score(test_data_labels, clf_5.predict(test)))
     print(accuracy_score(test_data_labels, clf_10.predict(test)))
     kf = KFold(n_splits=10)
