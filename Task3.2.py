@@ -50,12 +50,12 @@ def main():
     plt.plot(history.history['val_loss'])
     plt.xlabel("Epochs")
     plt.ylabel("Value")
-    plt.show()
+    # plt.show()
 
     clf_5 = random_forest(train, train_data_labels, 5, 1000)
     clf_10 = random_forest(train, train_data_labels, 10, 1000)
-    print(accuracy_score(test_data_labels, clf_5.predict(test)))
-    print(accuracy_score(test_data_labels, clf_10.predict(test)))
+    # print(accuracy_score(test_data_labels, clf_5.predict(test)))
+    # print(accuracy_score(test_data_labels, clf_10.predict(test)))
 
     # Task 3.3
 
@@ -64,9 +64,9 @@ def main():
         x_train, x_test = dataset_k_fold.iloc[train_index], dataset_k_fold.iloc[test_index]
         x_train_labels = x_train.pop("Participant Condition")
         x_test_labels = x_test.pop("Participant Condition")
-        ann_50 = ann(x_train, x_train_labels, x_test, x_test_labels, 10, 50)
-        ann_500 = ann(x_train, x_train_labels, x_test, x_test_labels, 10, 500)
-        ann_1000 = ann(x_train, x_train_labels, x_test, x_test_labels, 10, 1000)
+        ann_50 = ann(x_train, x_train_labels, x_test, x_test_labels, 200, 50)
+        ann_500 = ann(x_train, x_train_labels, x_test, x_test_labels, 200, 500)
+        ann_1000 = ann(x_train, x_train_labels, x_test, x_test_labels, 200, 1000)
         trees_50 = random_forest(x_train, x_train_labels, 10, 50)
         trees_500 = random_forest(x_train, x_train_labels, 10, 500)
         trees_10000 = random_forest(x_train, x_train_labels, 10, 10000)
