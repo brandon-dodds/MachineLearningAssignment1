@@ -8,9 +8,11 @@ from sklearn.model_selection import KFold
 
 
 def ann(train, train_data_labels, test, test_data_labels, epochs, neurons_in_layer):
+    # Normalize training data
     layer = tf.keras.layers.Normalization(axis=-1)
     layer.adapt(train)
     layer(test)
+    # Create ML Model
     model = tf.keras.models.Sequential([
         layer,
         tf.keras.layers.Dense(neurons_in_layer, activation='sigmoid'),
@@ -21,12 +23,13 @@ def ann(train, train_data_labels, test, test_data_labels, epochs, neurons_in_lay
     model.compile(optimizer='adam',
                   loss='binary_crossentropy',
                   metrics=['accuracy'])
-
+    # Return the History for accuracy.
     history = model.fit(train, train_data_labels, validation_data=(test, test_data_labels), epochs=epochs)
     return history
 
 
 def random_forest(train, train_data_labels, num_leafs, num_trees):
+    # Random Forest Classifier is fit to the test data.
     clf = RandomForestClassifier(max_depth=2, random_state=0, min_samples_leaf=num_leafs, n_estimators=num_trees)
     clf.fit(train, train_data_labels)
     return clf
@@ -41,10 +44,12 @@ def main():
     train, test = train_test_split(dataset, test_size=0.1)
     train_data_labels = train.pop("Participant Condition")
     test_data_labels = test.pop("Participant Condition")
-    history = ann(train, train_data_labels, test, test_data_labels, 10, 500)
+    history = ann(train, train_data_labels, test, test_data_labels, 1000, 500)
     plt.plot(history.history['val_accuracy'])
     plt.plot(history.history['val_loss'])
-    # plt.show()
+    plt.xlabel("Epochs")
+    plt.ylabel("Value")
+    plt.show()
 
     clf_5 = random_forest(train, train_data_labels, 5, 1000)
     clf_10 = random_forest(train, train_data_labels, 10, 1000)
