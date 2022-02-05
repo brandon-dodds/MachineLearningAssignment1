@@ -33,10 +33,11 @@ def random_forest(train, train_data_labels, num_leafs, num_trees):
 
 
 def main():
+    # Task 3.2
     dataset = pd.read_csv("Task3 - dataset - HIV RVG.csv")
-    dataset_KFold = dataset.copy()
     dataset = dataset.replace(to_replace=['Control', 'Patient'], value=[0, 1])
     dataset = dataset.drop(['Image number', 'Bifurcation number', 'Artery (1)/ Vein (2)'], axis=1)
+    dataset_k_fold = dataset.copy()
     train, test = train_test_split(dataset, test_size=0.1)
     train_data_labels = train.pop("Participant Condition")
     test_data_labels = test.pop("Participant Condition")
@@ -49,11 +50,25 @@ def main():
     clf_10 = random_forest(train, train_data_labels, 10, 1000)
     print(accuracy_score(test_data_labels, clf_5.predict(test)))
     print(accuracy_score(test_data_labels, clf_10.predict(test)))
+
+    # Task 3.3
+
     kf = KFold(n_splits=10)
-    for train_index, test_index in kf.split(dataset):
-        print("TRAIN:", train_index, "TEST:", test_index)
-        x_train, x_test = dataset.iloc[train_index], dataset.iloc[test_index]
-        print(x_train, x_test)
+    for train_index, test_index in kf.split(dataset_k_fold):
+        x_train, x_test = dataset_k_fold.iloc[train_index], dataset_k_fold.iloc[test_index]
+        x_train_labels = x_train.pop("Participant Condition")
+        x_test_labels = x_test.pop("Participant Condition")
+        ann_50 = ann(x_train, x_train_labels, x_test, x_test_labels, 10, 50)
+        ann_500 = ann(x_train, x_train_labels, x_test, x_test_labels, 10, 500)
+        ann_1000 = ann(x_train, x_train_labels, x_test, x_test_labels, 10, 1000)
+        trees_50 = random_forest(x_train, x_train_labels, 10, 50)
+        trees_500 = random_forest(x_train, x_train_labels, 10, 500)
+        trees_10000 = random_forest(x_train, x_train_labels, 10, 10000)
+        print(
+            f"{ann_50.history['val_accuracy']}, {ann_500.history['val_accuracy']}, {ann_1000.history['val_accuracy']}",
+            accuracy_score(test_data_labels, trees_50.predict(test)),
+            accuracy_score(test_data_labels, trees_500.predict(test)),
+            accuracy_score(test_data_labels, trees_10000.predict(test)))
 
 
 main()
