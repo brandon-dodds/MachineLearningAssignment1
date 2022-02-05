@@ -5,6 +5,7 @@ from matplotlib import pyplot as plt
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import accuracy_score
 from sklearn.model_selection import KFold
+from statistics import mean
 
 
 def ann(train, train_data_labels, test, test_data_labels, epochs, neurons_in_layer):
@@ -24,7 +25,7 @@ def ann(train, train_data_labels, test, test_data_labels, epochs, neurons_in_lay
                   loss='binary_crossentropy',
                   metrics=['accuracy'])
     # Return the History for accuracy.
-    history = model.fit(train, train_data_labels, validation_data=(test, test_data_labels), epochs=epochs)
+    history = model.fit(train, train_data_labels, validation_data=(test, test_data_labels), epochs=epochs, verbose=0)
     return history
 
 
@@ -44,7 +45,7 @@ def main():
     train, test = train_test_split(dataset, test_size=0.1)
     train_data_labels = train.pop("Participant Condition")
     test_data_labels = test.pop("Participant Condition")
-    history = ann(train, train_data_labels, test, test_data_labels, 1000, 500)
+    history = ann(train, train_data_labels, test, test_data_labels, 5, 500)
     plt.plot(history.history['val_accuracy'])
     plt.plot(history.history['val_loss'])
     plt.xlabel("Epochs")
@@ -70,10 +71,10 @@ def main():
         trees_500 = random_forest(x_train, x_train_labels, 10, 500)
         trees_10000 = random_forest(x_train, x_train_labels, 10, 10000)
         print(
-            f"{ann_50.history['val_accuracy']}, {ann_500.history['val_accuracy']}, {ann_1000.history['val_accuracy']}",
-            accuracy_score(test_data_labels, trees_50.predict(test)),
-            accuracy_score(test_data_labels, trees_500.predict(test)),
-            accuracy_score(test_data_labels, trees_10000.predict(test)))
+            f"ANN 50: {mean(ann_50.history['val_accuracy'])}, ANN 500 {mean(ann_500.history['val_accuracy'])}, ANN 1000 {mean(ann_1000.history['val_accuracy'])}",
+            f"TREES 50: {accuracy_score(x_test_labels, trees_50.predict(x_test))}",
+            f"TREES 500: {accuracy_score(x_test_labels, trees_500.predict(x_test))}",
+            f"TREES 10000: {accuracy_score(x_test_labels, trees_10000.predict(x_test))}")
 
 
 main()
