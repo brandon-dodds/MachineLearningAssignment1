@@ -61,15 +61,18 @@ def main():
 
     kf = KFold(n_splits=10)
     for train_index, test_index in kf.split(dataset_k_fold):
+        # Prepare the dataset
         x_train, x_test = dataset_k_fold.iloc[train_index], dataset_k_fold.iloc[test_index]
         x_train_labels = x_train.pop("Participant Condition")
         x_test_labels = x_test.pop("Participant Condition")
+        # Create the classifiers
         ann_50 = ann(x_train, x_train_labels, x_test, x_test_labels, 200, 50)
         ann_500 = ann(x_train, x_train_labels, x_test, x_test_labels, 200, 500)
         ann_1000 = ann(x_train, x_train_labels, x_test, x_test_labels, 200, 1000)
         trees_50 = random_forest(x_train, x_train_labels, 10, 50)
         trees_500 = random_forest(x_train, x_train_labels, 10, 500)
         trees_10000 = random_forest(x_train, x_train_labels, 10, 10000)
+        # Print the results.
         print(
             f"ANN 50: {mean(ann_50.history['val_accuracy'])}, ANN 500 {mean(ann_500.history['val_accuracy'])}, ANN 1000 {mean(ann_1000.history['val_accuracy'])}",
             f"TREES 50: {accuracy_score(x_test_labels, trees_50.predict(x_test))}",
